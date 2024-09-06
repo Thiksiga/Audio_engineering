@@ -31,7 +31,7 @@ def lpc_analysis(signal, order):
 
 
 # Specify the path to your audio file
-filename = r"C:\Users\ROG ZEPHYRUS\Documents\Seme8\Audio_eng\Audio_eng\LPC_pitchest\aud2.wav"
+filename = r"C:\Users\ROG ZEPHYRUS\Documents\Seme8\Audio_eng\Audio_eng\Audio_engineering\LPC_pitchest\aud2.wav"
 
 # Read the audio file
 sample_rate, audio = wav.read(filename)
@@ -85,4 +85,31 @@ plt.xlabel('Time (s)')
 plt.ylabel('Pitch (Hz)')
 plt.title('Pitch Estimation using LPC')
 plt.grid(True)
+plt.show()
+
+# Analyzing the results
+valid_pitches = pitch_lpc[pitch_lpc > 0]  # Filter out zero values (invalid pitch estimations)
+
+# Compute statistics
+mean_pitch = np.mean(valid_pitches)
+std_pitch = np.std(valid_pitches)
+min_pitch = np.min(valid_pitches)
+max_pitch = np.max(valid_pitches)
+
+# Display the results
+print(f"Mean Pitch: {mean_pitch:.2f} Hz")
+print(f"Standard Deviation of Pitch: {std_pitch:.2f} Hz")
+print(f"Minimum Pitch: {min_pitch:.2f} Hz")
+print(f"Maximum Pitch: {max_pitch:.2f} Hz")
+
+# Highlight the range where pitch estimation is most consistent
+plt.figure(figsize=(10, 6))
+plt.hist(valid_pitches, bins=30, color='skyblue', edgecolor='black')
+plt.axvline(mean_pitch, color='r', linestyle='dashed', linewidth=1, label=f'Mean Pitch: {mean_pitch:.2f} Hz')
+plt.axvline(mean_pitch + std_pitch, color='g', linestyle='dashed', linewidth=1, label=f'Std Dev: {std_pitch:.2f} Hz')
+plt.axvline(mean_pitch - std_pitch, color='g', linestyle='dashed', linewidth=1)
+plt.xlabel('Pitch (Hz)')
+plt.ylabel('Frequency')
+plt.title('Distribution of Estimated Pitch Values')
+plt.legend()
 plt.show()
